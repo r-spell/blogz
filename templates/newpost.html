@@ -2,4 +2,16 @@
 
 {% block content %}
 
+    <form action="/" method="post">
+    <label for="title" > Title for your blog:
+    <input type="text" id="title" name="title" >
+       </label>
+       <br>
+         <label for="body_text" > Your new blog:
+     <textarea id="body_text" name="body_text"></textarea>
+       </label>
+<br>
+    <input type="submit"  value="Add Entry">
+ 
+    </form>
 {% endblock %}

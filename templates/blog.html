@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+  
+    
     {% if blogs|length == 0 %}
     <p>No blogs yet</p>
     {% else %}
 
-    
             {% for blog in blogs %}
             <h2>{{blog.title}}</h2>
             <p>{{blog.body}}</p>
