@@ -16,7 +16,7 @@ class Blog(db.Model):
 
     def __init__(self, title):
         self.title = title
-        self.body = body
+        self.body = ''
 
 
 @app.route('/')
@@ -31,15 +31,15 @@ def new_post():
     return render_template('newpost.html',page_title="Add a Blog Entry")
 
 
-    #blog_id = int(request.form['blog_id'])
-   # blog = Blog.query.get(blog_id)
-   # body_text = request.form['body_text']
-  #  blog.body = body_text
-  #  db.session.add(blog)
-   # db.session.commit()
-
-    #return redirect('/')
-
+@app.route('/newpost', methods=['POST'])
+def submit_post(): 
+    title= request.form['title']
+    blog = Blog(title)
+    body_text = request.form['body_text'] 
+    blog.body = body_text
+    db.session.add(blog)
+    db.session.commit() 
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run()
