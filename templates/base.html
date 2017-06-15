@@ -1,14 +1,15 @@
 <!doctype html>
 <html>
     <head>
-        <title>{{title}}</title>
+        <title>{{page_title}}</title>
     </head>
  <nav>
   <a href="/">Main Blog Page</a> 
   <a href="/newpost">Add a Blog Entry</a> 
 
-</nav> 
+</nav>
 <body>
+    <h1>{{page_title}}</h1>
 
     {% block content %}
     {% endblock %}
