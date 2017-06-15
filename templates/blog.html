@@ -7,14 +7,17 @@
     <p>No blogs yet</p>
     {% else %}
 
-        <ul>
+    
             {% for blog in blogs %}
-            <li>{{blog.title}}
+            <h2>{{blog.title}}</h2>
+            <p>{{blog.body}}</p>
 
                
-            </li>
+            
+            < hr />
             {% endfor %}
-        </ul>
+            
+   
 
     {% endif %}
 
