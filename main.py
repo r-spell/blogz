@@ -18,6 +18,10 @@ class Blog(db.Model):
         self.title = title
         self.body = ''
 
+def empty_string(string):
+    if len(string)==0:
+        return True
+    return False
 
 @app.route('/')
 def index():
@@ -37,9 +41,24 @@ def submit_post():
     blog = Blog(title)
     body_text = request.form['body_text'] 
     blog.body = body_text
+    body_error = ''
+    title_error = ''
     db.session.add(blog)
-    db.session.commit() 
-    return redirect('/')
 
+    # check for errors in inputs and clear if there are errors
+    if empty_string(title):
+        title_error = "Please fill in the title"
+
+    if empty_string(body_text):
+        body_error = "Please fill in the body"
+
+    
+    # show blog page  and commit if no errors
+    if not empty_string(body_text) and not empty_string(title):
+        db.session.commit() 
+        return redirect('/')
+    # show errors on new post page if any errors
+    else: 
+        return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry")
 if __name__ == '__main__':
     app.run()
