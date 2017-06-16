@@ -36,7 +36,7 @@ def new_post():
 
 @app.route('/newpost', methods=['POST'])
 def submit_post(): 
-    title= request.form['title']
+    title = request.form['title']
     blog = Blog(title)
     body_text = request.form['body_text'] 
     blog.body = body_text
@@ -60,7 +60,7 @@ def submit_post():
         return redirect('/blog?id='+str(blog_id))
     # show errors on new post page if any errors
     else: 
-        return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry")
+        return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry", title=title, body_text=body_text)
 
 
 @app.route('/')

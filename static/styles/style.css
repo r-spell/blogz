@@ -1,0 +1,18 @@
+h2 { 
+	background-color: #8F8380;
+}
+
+h1,h2, h3 {
+	text-align: center;
+}
+
+.error { 
+    font-style: italic;
+    color :red;
+ }
+
+body {{
+    margin: 100px 150px 100px 80px;
+    padding: 100px 150px 100px 80px;
+}}
+
