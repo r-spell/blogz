@@ -28,9 +28,12 @@ def empty_string(string):
 
 @app.route('/')
 def index():
-    blogs = Blog.query.all()
-    return render_template('blog.html',page_title="Build a Blog", 
+    blogs = get_bloglist
+
+    return render_template('index.html',page_title="Build a Blog", 
         blogs=blogs)
+
+
 
 
 @app.route('/newpost')
