@@ -26,13 +26,6 @@ def empty_string(string):
         return True
     return False
 
-@app.route('/')
-def index():
-    blogs = get_bloglist
-
-    return render_template('index.html',page_title="Build a Blog", 
-        blogs=blogs)
-
 
 
 
@@ -59,13 +52,32 @@ def submit_post():
         body_error = "Please fill in the body"
 
     
-    # show blog page  and commit if no errors
+    # show main blog page  and commit if no errors
     if not empty_string(body_text) and not empty_string(title):
         db.session.commit() 
-        return redirect('/')
+        blog = db.session.query(Blog).order_by(Blog.id.desc()).first()
+        blog_id=blog.id
+        return redirect('/blog?id='+str(blog_id))
     # show errors on new post page if any errors
     else: 
         return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry")
+
+
+@app.route('/')
+def index():
+    blogs = get_bloglist()
+    return render_template('index.html',page_title="Build a Blog", 
+        blogs=blogs)
+
+@app.route('/blog')
+def blog_display():
+    blog_id = request.args.get('id')
+    blog = Blog.query.get(blog_id)
+    blog_title = blog.title
+    blog_body = blog.body
+
+    return render_template('blog.html',blog_title=blog_title, blog_body=blog_body)
+
 
 if __name__ == '__main__':
     app.run()
