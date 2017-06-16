@@ -18,6 +18,9 @@ class Blog(db.Model):
         self.title = title
         self.body = ''
 
+def get_bloglist():
+    return Blog.query.all()
+
 def empty_string(string):
     if len(string)==0:
         return True
@@ -60,5 +63,6 @@ def submit_post():
     # show errors on new post page if any errors
     else: 
         return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry")
+
 if __name__ == '__main__':
     app.run()
