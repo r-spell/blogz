@@ -11,8 +11,12 @@ h1,h2, h3 {
     color :red;
  }
 
-body {{
-    margin: 100px 150px 100px 80px;
-    padding: 100px 150px 100px 80px;
-}}
+body {
+    margin: 0px 150px 100px 80px;
+    padding: 50px 50px 50px 50px;
+}
+
+p {
+    margin: 0px 50px;
+}
 

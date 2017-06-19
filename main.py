@@ -18,22 +18,26 @@ class Blog(db.Model):
         self.title = title
         self.body = ''
 
+
+# function gives list of all blog entries
 def get_bloglist():
     return Blog.query.all()
 
+
+# function for testing inputs, returns true if empty string given 
 def empty_string(string):
     if len(string)==0:
         return True
     return False
 
 
-
-
+# shows the newpost page
 @app.route('/newpost')
 def new_post():
     return render_template('newpost.html',page_title="Add a Blog Entry")
 
 
+# handles user inputs to newpost page 
 @app.route('/newpost', methods=['POST'])
 def submit_post(): 
     title = request.form['title']
@@ -44,6 +48,7 @@ def submit_post():
     title_error = ''
     db.session.add(blog)
 
+
     # check for errors in inputs and clear if there are errors
     if empty_string(title):
         title_error = "Please fill in the title"
@@ -51,14 +56,13 @@ def submit_post():
     if empty_string(body_text):
         body_error = "Please fill in the body"
 
-    
     # show main blog page  and commit if no errors
     if not empty_string(body_text) and not empty_string(title):
         db.session.commit() 
         blog = db.session.query(Blog).order_by(Blog.id.desc()).first()
         blog_id=blog.id
         return redirect('/blog?id='+str(blog_id))
-    # show errors on new post page if any errors
+    # show errors on newpost page if any errors
     else: 
         return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry", title=title, body_text=body_text)
 
@@ -69,6 +73,8 @@ def index():
     return render_template('index.html',page_title="Build a Blog", 
         blogs=blogs)
 
+
+# display individual blog with "id=" and id number in query string
 @app.route('/blog')
 def blog_display():
     blog_id = request.args.get('id')
