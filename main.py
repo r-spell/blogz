@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -6,7 +6,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:goblog@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
-
+app.secret_key = 'b33pGcys&zP3B'
 
 class Blog(db.Model):
 
@@ -24,12 +24,12 @@ class Blog(db.Model):
 class User(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
-    email = db.Column(db.String(120), unique=True)
+    username = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
     blogs = db.relationship("Blog", backref='owner')
 
-    def __init__(self, email, password):
-        self.email = email
+    def __init__(self, username, password):
+        self.username = username
         self.password = password
 
 # function gives list of all blog entries
@@ -47,10 +47,21 @@ def empty_string(string):
 def login():
     #check for request type
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
-        
+        user = User.query.filter_by(username=username).first()
+
+        # TODO add further validation
+        # TODO  User enters a username that is stored in the database with the correct password and is redirected to the /newpost page with their username being stored in a session.
+        #User enters a username that is stored in the database with an incorrect password and is redirected to the /login page with a message that their password is incorrect.
+        #User tries to login with a username that is not stored in the database and is redirected to the /login page with a message that this username does not exist.
+        #User does not have an account and clicks "Create Account" and is directed to the /signup page
+        # user with valid username and password redirected to /newpost, username stored in session
+        if user and user.password == password: #if "user" has value "none" (user does not exist) will not meet condition
+            session['username'] = username
+            # TODO add flash message "Logged in"
+            return redirect('/newpost')
+
     return render_template('login.html')
 
 # shows the newpost page
@@ -62,7 +73,7 @@ def new_post():
 # handles user inputs to newpost page 
 @app.route('/newpost', methods=['POST'])
 def submit_post(): 
-    owner = User.query.filter_by(email=session['email']).first()
+    owner = User.query.filter_by(username=session['username']).first()
     title = request.form['title']
     blog = Blog(title, owner)
     body_text = request.form['body_text'] 
