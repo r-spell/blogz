@@ -51,18 +51,20 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
 
-
-        # TODO User enters a username that is stored in the database with the correct password and is redirected to the /newpost page with their username being stored in a session.
-        # TODO User enters a username that is stored in the database with an incorrect password and is redirected to the /login page with a message that their password is incorrect.
-        # TODO User tries to login with a username that is not stored in the database and is redirected to the /login page with a message that this username does not exist.
-        # TODO User does not have an account and clicks "Create Account" and is directed to the /signup page
-        
-        # user with valid username and password redirected to /newpost, username stored in session
-        if user and user.password == password: #if "user" has value "none" (user does not exist) will not meet condition
-            session['username'] = username
-            flash("Logged in")
-            return redirect('/newpost')
-
+        # user with valid username 
+        if user: #if "user" has value "none" (user does not exist) will not meet condition
+            # when correct password is given, redirected to /newpost, username stored in session
+            if user.password == password:
+                session['username'] = username
+                flash("Logged in")
+                return redirect('/newpost')
+            # when incorrect password given, redirected to /login    
+            else: 
+                flash("Oops! Incorrect password given.")
+        # user tries to login with username not stored in the database
+        else: 
+            flash("We searched and searched! This username does not exist")
+            
     return render_template('login.html')
 
 # shows the newpost page
