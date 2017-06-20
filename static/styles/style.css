@@ -6,10 +6,7 @@ h1,h2, h3 {
 	text-align: center;
 }
 
-.error { 
-    font-style: italic;
-    color :red;
- }
+
 
 body {
     margin: 0px 150px 100px 80px;
@@ -20,3 +17,13 @@ p {
     margin: 0px 50px;
 }
 
+.error { 
+    font-style: italic;
+    color :red;
+ }
+
+.form-label, .form-input{
+            display: block;
+            width: 100px;
+            float: left;
+           

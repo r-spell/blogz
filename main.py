@@ -43,6 +43,15 @@ def empty_string(string):
         return True
     return False
 
+@app.route('/login', methods=['POST','GET'])
+def login():
+    #check for request type
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        
+    return render_template('login.html')
 
 # shows the newpost page
 @app.route('/newpost')
