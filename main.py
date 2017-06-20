@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -51,15 +51,16 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
 
-        # TODO add further validation
-        # TODO  User enters a username that is stored in the database with the correct password and is redirected to the /newpost page with their username being stored in a session.
-        #User enters a username that is stored in the database with an incorrect password and is redirected to the /login page with a message that their password is incorrect.
-        #User tries to login with a username that is not stored in the database and is redirected to the /login page with a message that this username does not exist.
-        #User does not have an account and clicks "Create Account" and is directed to the /signup page
+
+        # TODO User enters a username that is stored in the database with the correct password and is redirected to the /newpost page with their username being stored in a session.
+        # TODO User enters a username that is stored in the database with an incorrect password and is redirected to the /login page with a message that their password is incorrect.
+        # TODO User tries to login with a username that is not stored in the database and is redirected to the /login page with a message that this username does not exist.
+        # TODO User does not have an account and clicks "Create Account" and is directed to the /signup page
+        
         # user with valid username and password redirected to /newpost, username stored in session
         if user and user.password == password: #if "user" has value "none" (user does not exist) will not meet condition
             session['username'] = username
-            # TODO add flash message "Logged in"
+            flash("Logged in")
             return redirect('/newpost')
 
     return render_template('login.html')
