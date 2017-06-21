@@ -5,13 +5,13 @@
         <title>{{page_title}}</title>
     </head>
     <nav>
-        <a href="/">Main Blog Page</a> 
+        <a href="/"> Blogz Home </a>
+        <a href="/blog">Main Blog Page</a> 
         <a href="/newpost">Add a Blog Entry</a> 
         <div style='float: right;'> 
         {% if 'username' in session %}
-        You are logged in as {{ session['username'] }}
-        <form action="logout" method="post" id="logout">
-            <input type="submit" value="Log Out" />
+        You are logged in as {{ session['username'] }},
+        <a href='/logout'> Logout </a>
         </form>
         {% else %}
             <a href="login">Login</a>

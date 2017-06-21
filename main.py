@@ -106,6 +106,11 @@ def signup():
                 flash("This username is already in use.  Please give a new username")
     return render_template('signup.html', page_title="Create a Blogz Account!")
 
+@app.route('/logout')
+def logout():
+    del session['username']
+    flash("You're logged out! Bye bye!")
+    return redirect('/blog')
 
 # shows the newpost page
 @app.route('/newpost')
@@ -143,23 +148,20 @@ def submit_post():
         return render_template('newpost.html',title_error=title_error,body_error=body_error,page_title="Add a Blog Entry", title=title, body_text=body_text)
 
 
-@app.route('/')
-def index():
-    blogs = get_bloglist()
-    return render_template('index.html',page_title="Build a Blog", 
+@app.route('/blog')
+def list_blogs():
+    blog_id = request.args.get('id',None)
+    # display individual blog with "id=" and id number in query string
+    if blog_id:
+        blogs = Blog.query.filter_by(id=blog_id).all()
+    #show all blogs if blog_id = None
+    else:
+        blogs = get_bloglist()
+    return render_template('blog.html',page_title="Build a Blog", 
         blogs=blogs)
 
 
 # display individual blog with "id=" and id number in query string
-@app.route('/blog')
-def blog_display():
-    blog_id = request.args.get('id')
-    blog = Blog.query.get(blog_id)
-    blog_title = blog.title
-    blog_body = blog.body
-
-    return render_template('blog.html',blog_title=blog_title, blog_body=blog_body)
-
 
 if __name__ == '__main__':
     app.run()
