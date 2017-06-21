@@ -43,6 +43,13 @@ def empty_string(string):
         return True
     return False
 
+# Check if length of string is valid.  Returns True if Invalid.
+def string_invalid(string):
+    if len(string)<3:
+        return True
+    return False
+
+
 @app.route('/login', methods=['POST','GET'])
 def login():
     #check for request type
@@ -64,8 +71,41 @@ def login():
         # user tries to login with username not stored in the database
         else: 
             flash("We searched and searched! This username does not exist")
-            
+
     return render_template('login.html')
+
+@app.route('/signup', methods=['POST','GET'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        verify = request.form['verify']
+        
+        #check valid entries made
+        if empty_string(password) or empty_string(username) or empty_string(verify):
+            flash("One or more fields are invalid")
+        elif string_invalid(password):
+            flash("Oh dear! You seem to have entered an invalid password!")
+        elif string_invalid(username):
+            flash("Sorry, this is not a valid username.")
+        # if entries valid, check if user in database already
+        else:
+        # check if user exists in database
+            existing_user = User.query.filter_by(username=username).first() 
+            if not existing_user:
+            # check passwords match
+                if verify == password:
+                    new_user = User(username,password)
+                    db.session.add(new_user)
+                    db.session.commit()
+                    flash("Welcome!")
+                    return redirect('/newpost')
+                else: 
+                    flash("Oopsies! Your passwords do not match!")
+            else: 
+                flash("This username is already in use.  Please give a new username")
+    return render_template('signup.html', page_title="Create a Blogz Account!")
+
 
 # shows the newpost page
 @app.route('/newpost')
@@ -84,7 +124,6 @@ def submit_post():
     body_error = ''
     title_error = ''
     db.session.add(blog)
-
 
     # check for errors in inputs and clear if there are errors
     if empty_string(title):

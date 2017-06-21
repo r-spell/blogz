@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Sign up for Blogz </h1>
+<p> Username and passwords but have at least 3 characters. </p>
+<form method="post">
+
+ <p> <label class='form-label' for="username"> Username </label>
+        <input class='form-input' name="username" type="text" value="{{ username }}" /> </p>
+<br>
+<br>
+  <p>    <label class='form-label' for="password"> Password </label>
+        <input class='form-input' name="password" type="password" value="{{password}}" /> </p>
+<br>
+<br>
+  <p>    <label class='form-label' for="verify"> Verify Password </label>
+        <input class='form-input' name="verify" type="verify" value="{{verify}}" /> </p>
+<br>
+<br>
+    <p>    <input type="submit" value="Sign me up!" /> </p>
+    
+</form>
+
+{% endblock %}
