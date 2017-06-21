@@ -5,19 +5,19 @@
         <title>{{page_title}}</title>
     </head>
     <nav>
-        <a href="/"> Blogz Home </a>
+        <a href="/">Blogz Home</a>
         <a href="/blog">Main Blog Page</a> 
         <a href="/newpost">Add a Blog Entry</a> 
-        <div style='float: right;'> 
+       
         {% if 'username' in session %}
-        You are logged in as {{ session['username'] }},
-        <a href='/logout'> Logout </a>
-        </form>
+         <a href='/logout'> Logout </a>
+         <div style='float: right;'> You are logged in as {{ session['username'] }} </div>
+       
         {% else %}
             <a href="login">Login</a>
             <a href ="signup">Signup</a>
         {% endif %}
-        </div>
+       
     </nav>
     <body>
         <h1>{{page_title}}</h1>

@@ -49,6 +49,15 @@ def string_invalid(string):
         return True
     return False
 
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup','list_blogs','index' ]
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
+@app.route('/')
+def index():
+    return render_template('index.html', page_title = "Blogz Home")
 
 @app.route('/login', methods=['POST','GET'])
 def login():
