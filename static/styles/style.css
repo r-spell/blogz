@@ -26,4 +26,8 @@ p {
             display: block;
             width: 100px;
             float: left;
-           
+}
+
+.author-tag {
+    font-size: 12px;
+}

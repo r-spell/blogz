@@ -20,6 +20,8 @@ class Blog(db.Model):
         self.title = title
         self.body = ''
         self.owner = owner
+    
+
 
 class User(db.Model):
 
@@ -32,9 +34,8 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-# function gives list of all blog entries
-def get_bloglist():
-    return Blog.query.all()
+
+
 
 
 # function for testing inputs, returns true if empty string given 
@@ -51,13 +52,14 @@ def string_invalid(string):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup','list_blogs','index' ]
+    allowed_routes = ['login', 'signup','list_blogs','index', 'static' ]
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
 @app.route('/')
 def index():
-    return render_template('index.html', page_title = "Blogz Home")
+    users = User.query.all()
+    return render_template('index.html', page_title = "Blogz Home",users=users)
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -160,14 +162,22 @@ def submit_post():
 @app.route('/blog')
 def list_blogs():
     blog_id = request.args.get('id',None)
+    author_name= request.args.get('user',None)
+
     # display individual blog with "id=" and id number in query string
     if blog_id:
         blogs = Blog.query.filter_by(id=blog_id).all()
-    #show all blogs if blog_id = None
+    #show all blogs by a certain user with "user=" and the username in query string
+    elif author_name:
+        author = User.query.filter_by(username=author_name).first()
+        author_id = author.id
+        blogs = Blog.query.filter_by(owner_id=author_id).all()
+    #show all blogs if blog_id = None and user_id = None
     else:
-        blogs = get_bloglist()
-    return render_template('blog.html',page_title="Build a Blog", 
+        blogs = Blog.query.all()
+    return render_template('blog.html',page_title="Blogs", 
         blogs=blogs)
+
 
 
 # display individual blog with "id=" and id number in query string
